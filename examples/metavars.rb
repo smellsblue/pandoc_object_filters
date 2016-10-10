@@ -6,7 +6,7 @@
 
 require 'pandoc_object_filters'
 
-filter = PandocObjectFilters::Element::Filter.new
+filter = PandocObjectFilters::Filter.new
 
 filter.filter! do |element|
   if element.kind_of?(PandocObjectFilters::Element::Str)

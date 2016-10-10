@@ -17,7 +17,7 @@ def self.bullet_list(items)
   PandocObjectFilters::Element::BulletList.new(items)
 end
 
-PandocObjectFilters::Element.filter! do |element|
+PandocObjectFilters.filter! do |element|
   if element.kind_of?(PandocObjectFilters::Element::DefinitionList)
     bullet_list(element.elements)
   end

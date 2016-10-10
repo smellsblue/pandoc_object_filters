@@ -15,7 +15,7 @@ class ObjectFiltersTest < Minitest::Test
     EOF
 
     output = StringIO.new
-    PandocObjectFilters::Element.filter(ast_to_stream(ast), output) { }
+    PandocObjectFilters.filter(ast_to_stream(ast), output) { }
     assert_equal(ast, stream_to_ast(output))
   end
 
@@ -32,7 +32,7 @@ class ObjectFiltersTest < Minitest::Test
 
     output = StringIO.new
 
-    PandocObjectFilters::Element.filter(ast_to_stream(ast), output) do |element|
+    PandocObjectFilters.filter(ast_to_stream(ast), output) do |element|
       next unless element.kind_of?(PandocObjectFilters::Element::Header)
       element.walk { |e| e.value.upcase! if e.respond_to?(:value) }
     end
@@ -58,7 +58,7 @@ class ObjectFiltersTest < Minitest::Test
     EOF
 
     output = StringIO.new
-    filter = PandocObjectFilters::Element::Filter.new(ast_to_stream(ast), output, %w(markdown))
+    filter = PandocObjectFilters::Filter.new(ast_to_stream(ast), output, %w(markdown))
 
     filter.filter do |element|
       next unless element.kind_of?(PandocObjectFilters::Element::Header)
@@ -85,7 +85,7 @@ class ObjectFiltersTest < Minitest::Test
     EOF
 
     output = StringIO.new
-    filter = PandocObjectFilters::Element::Filter.new(ast_to_stream(ast), output)
+    filter = PandocObjectFilters::Filter.new(ast_to_stream(ast), output)
 
     filter.filter do |element|
       next unless element.kind_of?(PandocObjectFilters::Element::Header)
