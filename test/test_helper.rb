@@ -1,5 +1,6 @@
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 require "pandoc_object_filters"
+require "json"
 require "minitest/autorun"
 require "open3"
 require "stringio"
