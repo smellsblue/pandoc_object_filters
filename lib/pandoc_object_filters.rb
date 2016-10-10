@@ -336,23 +336,6 @@ module PandocObjectFilters
         {}
       end
 
-      case params.size
-      when 0
-        define_singleton_method(name) { {'t'=>name, 'c'=>[]} }
-      when 1
-        define_singleton_method(name) { |value| {'t'=>name, 'c'=>value} }
-      when 2
-        define_singleton_method(name) { |v1,v2| {'t'=>name, 'c'=>[v1,v2]} }
-      when 3
-        define_singleton_method(name) { |v1,v2,v3| {'t'=>name, 'c'=>[v1,v2,v3]} }
-      when 4
-        define_singleton_method(name) { |v1,v2,v3,v4| {'t'=>name, 'c'=>[v1,v2,v3,v4]} }
-      when 5
-        define_singleton_method(name) { |v1,v2,v3,v4,v5| {'t'=>name, 'c'=>[v1,v2,v3i,v4,v5]} }
-      else
-        raise "Too many parameters!"
-      end
-
       const_set(name, Class.new(PandocObjectFilters::Element::BaseElement) {
         (options[:include] || []).each { |mod| include mod }
 

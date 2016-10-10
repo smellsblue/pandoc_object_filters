@@ -19,7 +19,7 @@ filter.filter! do |element|
       if result.kind_of?(PandocObjectFilters::Element::MetaInlines)
         next PandocObjectFilters::Element::Span.new([PandocObjectFilters::Element::Attr.build(classes: ['interpolated'], key_values: { 'field' => field }), result.elements])
       elsif result.kind_of?(PandocObjectFilters::Element::MetaString)
-        next PandocObjectFilters::Element.Str(result.value)
+        next PandocObjectFilters::Element::Str.new(result.value)
       end
     end
   end
