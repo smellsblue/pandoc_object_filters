@@ -4,12 +4,12 @@
 # to. %{format} will be replaced by the format that pandoc passes in to this
 # filter. It will only be replaced from matching Str elements.
 
-require 'pandoc_object_filters'
+require "pandoc_object_filters"
 
 filter = PandocObjectFilters::Filter.new
 
 filter.filter do |element|
-  if element.kind_of?(PandocObjectFilters::Element::Str) && element.value == '%{format}'
+  if element.is_a?(PandocObjectFilters::Element::Str) && element.value == "%{format}"
     element.value = filter.format
   end
 end

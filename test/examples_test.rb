@@ -1,5 +1,5 @@
 # coding: utf-8
-require_relative 'test_helper'
+require_relative "test_helper"
 
 class ExamplesTest < Minitest::Test
   include PandocHelper

@@ -1,4 +1,4 @@
-require_relative 'test_helper'
+require_relative "test_helper"
 
 class MetaTest < Minitest::Test
   include PandocAstHelper
@@ -10,7 +10,7 @@ class MetaTest < Minitest::Test
     EOF
 
     assert_equal PandocObjectFilters::Element::Meta, object.meta.class
-    expected_ast = { 'unMeta' => {} }
+    expected_ast = { "unMeta" => {} }
     assert_equal expected_ast, object.meta.to_ast
   end
 
@@ -22,7 +22,7 @@ class MetaTest < Minitest::Test
     EOF
 
     assert_equal PandocObjectFilters::Element::Meta, object.meta.class
-    expected_ast = { 'unMeta' => {} }
+    expected_ast = { "unMeta" => {} }
     assert_equal expected_ast, object.meta.to_ast
   end
 
@@ -34,8 +34,8 @@ class MetaTest < Minitest::Test
       Contents
     EOF
 
-    assert_equal PandocObjectFilters::Element::MetaString, object.meta['key'].class
-    expected_ast = { 'unMeta' => { 'key' => ast('MetaString', '123') } }
+    assert_equal PandocObjectFilters::Element::MetaString, object.meta["key"].class
+    expected_ast = { "unMeta" => { "key" => ast("MetaString", "123") } }
     assert_equal expected_ast, object.meta.to_ast
   end
 
@@ -47,8 +47,8 @@ class MetaTest < Minitest::Test
       Contents
     EOF
 
-    assert_equal PandocObjectFilters::Element::MetaBool, object.meta['key'].class
-    expected_ast = { 'unMeta' => { 'key' => ast('MetaBool', true) } }
+    assert_equal PandocObjectFilters::Element::MetaBool, object.meta["key"].class
+    expected_ast = { "unMeta" => { "key" => ast("MetaBool", true) } }
     assert_equal expected_ast, object.meta.to_ast
   end
 
@@ -62,8 +62,8 @@ class MetaTest < Minitest::Test
       Contents
     EOF
 
-    assert_equal PandocObjectFilters::Element::MetaList, object.meta['key'].class
-    expected_ast = { 'unMeta' => { 'key' => ast('MetaList', [ast('MetaString', '123'), ast('MetaString', '456')]) } }
+    assert_equal PandocObjectFilters::Element::MetaList, object.meta["key"].class
+    expected_ast = { "unMeta" => { "key" => ast("MetaList", [ast("MetaString", "123"), ast("MetaString", "456")]) } }
     assert_equal expected_ast, object.meta.to_ast
   end
 
@@ -77,8 +77,8 @@ class MetaTest < Minitest::Test
       Contents
     EOF
 
-    assert_equal PandocObjectFilters::Element::MetaMap, object.meta['key'].class
-    expected_ast = { 'unMeta' => { 'key' => ast('MetaMap', { 'key1' => ast('MetaString', '123'), 'key2' => ast('MetaString', '456') }) } }
+    assert_equal PandocObjectFilters::Element::MetaMap, object.meta["key"].class
+    expected_ast = { "unMeta" => { "key" => ast("MetaMap", "key1" => ast("MetaString", "123"), "key2" => ast("MetaString", "456")) } }
     assert_equal expected_ast, object.meta.to_ast
   end
 
@@ -90,8 +90,8 @@ class MetaTest < Minitest::Test
       Contents
     EOF
 
-    assert_equal PandocObjectFilters::Element::MetaInlines, object.meta['key'].class
-    expected_ast = { 'unMeta' => { 'key' => ast('MetaInlines', [ast('Str', 'hello'), ast('Space'), ast('Str', 'world')]) } }
+    assert_equal PandocObjectFilters::Element::MetaInlines, object.meta["key"].class
+    expected_ast = { "unMeta" => { "key" => ast("MetaInlines", [ast("Str", "hello"), ast("Space"), ast("Str", "world")]) } }
     assert_equal expected_ast, object.meta.to_ast
   end
 
@@ -106,8 +106,8 @@ class MetaTest < Minitest::Test
       Contents
     EOF
 
-    assert_equal PandocObjectFilters::Element::MetaBlocks, object.meta['key'].class
-    expected_ast = { 'unMeta' => { 'key' => ast('MetaBlocks', [ast('RawBlock', ['html', '<p>']), ast('Plain', [ast('Str', 'Contents')]), ast('RawBlock', ['html', '</p>'])]) } }
+    assert_equal PandocObjectFilters::Element::MetaBlocks, object.meta["key"].class
+    expected_ast = { "unMeta" => { "key" => ast("MetaBlocks", [ast("RawBlock", ["html", "<p>"]), ast("Plain", [ast("Str", "Contents")]), ast("RawBlock", ["html", "</p>"])]) } }
     assert_equal expected_ast, object.meta.to_ast
   end
 end

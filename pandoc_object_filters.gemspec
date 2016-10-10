@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Mike Virata-Stone"]
   spec.email         = ["mjstone@on-site.com"]
 
-  spec.summary       = %q{A library for object based pandoc filters.}
-  spec.description   = %q{This is a small library for creating pandoc filters using Ruby objects. It is forked from the pandoc-filter gem.}
+  spec.summary       = "A library for object based pandoc filters."
+  spec.description   = "This is a small library for creating pandoc filters using Ruby objects. It is forked from the pandoc-filter gem."
   spec.homepage      = "https://github.com/smellsblue/pandoc_object_filters"
   spec.license       = "MIT"
 
@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 1.13"
-  spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "minitest", "~> 5.0"
+  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rubocop", "0.43.0"
 end

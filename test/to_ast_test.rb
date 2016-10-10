@@ -1,4 +1,4 @@
-require_relative 'test_helper'
+require_relative "test_helper"
 
 class ToAstTest < Minitest::Test
   include PandocHelper
@@ -24,13 +24,13 @@ class ToAstTest < Minitest::Test
   end
 
   def test_with_hash
-    expected = { 'x' => 'value', 'y' => space_ast }
-    actual = PandocObjectFilters::Element.to_ast('x' => 'value', 'y' => space)
+    expected = { "x" => "value", "y" => space_ast }
+    actual = PandocObjectFilters::Element.to_ast("x" => "value", "y" => space)
     assert_equal(expected, actual)
   end
 
   def test_with_string
-    assert_equal('hello', PandocObjectFilters::Element.to_ast('hello'))
+    assert_equal("hello", PandocObjectFilters::Element.to_ast("hello"))
   end
 
   def test_para
@@ -40,17 +40,17 @@ class ToAstTest < Minitest::Test
   end
 
   def test_link
-    expected = ast('Link', [
-      ['id', ['class1', 'class2'], [['key1', 'value1'], ['key2', 'value2']]],
-      [ast('Str', 'link')],
-      ['http://example.com', 'This is the title']
-    ])
+    expected = ast("Link", [
+                     ["id", %w(class1 class2), [%w(key1 value1), %w(key2 value2)]],
+                     [ast("Str", "link")],
+                     ["http://example.com", "This is the title"]
+                   ])
 
     actual = PandocObjectFilters::Element::Link.new([
-      PandocObjectFilters::Element::Attr.new(['id', ['class1', 'class2'], [['key1', 'value1'], ['key2', 'value2']]]),
-      [PandocObjectFilters::Element::Str.new('link')],
-      PandocObjectFilters::Element::Target.new(['http://example.com', 'This is the title'])
-    ]).to_ast
+                                                      PandocObjectFilters::Element::Attr.new(["id", %w(class1 class2), [%w(key1 value1), %w(key2 value2)]]),
+                                                      [PandocObjectFilters::Element::Str.new("link")],
+                                                      PandocObjectFilters::Element::Target.new(["http://example.com", "This is the title"])
+                                                    ]).to_ast
 
     assert_equal(expected, actual)
   end

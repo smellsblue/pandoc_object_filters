@@ -8,19 +8,19 @@ module PandocObjectFilters
     end
 
     def walk(object = @object)
-      if object.kind_of?(Array)
+      if object.is_a?(Array)
         object.each do |item|
-          if item.kind_of?(PandocObjectFilters::Element::BaseElement)
+          if item.is_a?(PandocObjectFilters::Element::BaseElement)
             @block.call(item)
           end
 
           walk(item)
         end
-      elsif object.kind_of?(Hash)
+      elsif object.is_a?(Hash)
         object.values.each do |value|
           walk(value)
         end
-      elsif object.kind_of?(PandocObjectFilters::Element::Base)
+      elsif object.is_a?(PandocObjectFilters::Element::Base)
         walk(object.contents)
       end
 
@@ -28,14 +28,14 @@ module PandocObjectFilters
     end
 
     def walk!(object = @object)
-      if object.kind_of?(Array)
+      if object.is_a?(Array)
         result = []
         object.each do |item|
-          if item.kind_of?(PandocObjectFilters::Element::BaseElement)
+          if item.is_a?(PandocObjectFilters::Element::BaseElement)
             res = @block.call(item)
             if !res
               result.push(walk!(item))
-            elsif res.kind_of?(Array)
+            elsif res.is_a?(Array)
               res.each do |z|
                 result.push(walk!(z))
               end
@@ -47,13 +47,13 @@ module PandocObjectFilters
           end
         end
         return result
-      elsif object.kind_of?(Hash)
+      elsif object.is_a?(Hash)
         result = {}
         object.each do |key, value|
           result[key] = walk!(value)
         end
         return result
-      elsif object.kind_of?(PandocObjectFilters::Element::Base)
+      elsif object.is_a?(PandocObjectFilters::Element::Base)
         object.contents = walk!(object.contents)
         return object
       else

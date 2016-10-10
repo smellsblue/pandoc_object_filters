@@ -1,4 +1,4 @@
-require_relative 'test_helper'
+require_relative "test_helper"
 
 class ObjectFiltersTest < Minitest::Test
   include PandocHelper
@@ -33,7 +33,7 @@ class ObjectFiltersTest < Minitest::Test
     output = StringIO.new
 
     PandocObjectFilters.filter(ast_to_stream(ast), output) do |element|
-      next unless element.kind_of?(PandocObjectFilters::Element::Header)
+      next unless element.is_a?(PandocObjectFilters::Element::Header)
       element.walk { |e| e.value.upcase! if e.respond_to?(:value) }
     end
 
@@ -61,7 +61,7 @@ class ObjectFiltersTest < Minitest::Test
     filter = PandocObjectFilters::Filter.new(ast_to_stream(ast), output, %w(markdown))
 
     filter.filter do |element|
-      next unless element.kind_of?(PandocObjectFilters::Element::Header)
+      next unless element.is_a?(PandocObjectFilters::Element::Header)
       element.elements = [PandocObjectFilters::Element::Str.new(filter.format)]
     end
 
@@ -88,7 +88,7 @@ class ObjectFiltersTest < Minitest::Test
     filter = PandocObjectFilters::Filter.new(ast_to_stream(ast), output)
 
     filter.filter do |element|
-      next unless element.kind_of?(PandocObjectFilters::Element::Header)
+      next unless element.is_a?(PandocObjectFilters::Element::Header)
       element.elements = filter.meta["header"].contents
     end
 

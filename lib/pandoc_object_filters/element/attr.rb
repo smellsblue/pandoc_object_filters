@@ -8,13 +8,11 @@ module PandocObjectFilters
       contents_attr :key_values, 2
 
       def self.build(options = {})
-        id = options.fetch(:identifier, '')
+        id = options.fetch(:identifier, "")
         classes = options.fetch(:classes, [])
         key_values = options.fetch(:key_values, [])
 
-        if key_values.kind_of?(Hash)
-          key_values = key_values.to_a
-        end
+        key_values = key_values.to_a if key_values.is_a?(Hash)
 
         new([id, classes, key_values])
       end
