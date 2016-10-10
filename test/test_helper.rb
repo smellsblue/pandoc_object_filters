@@ -3,7 +3,6 @@ require "pandoc_object_filters"
 require "minitest/autorun"
 require "open3"
 require "stringio"
-require_relative "../lib/pandoc-filter"
 
 module PandocHelper
   def ast_to_stream(ast)
@@ -74,34 +73,34 @@ end
 
 module PandocElementHelper
   def hello_str
-    PandocElement::Str.new("hello")
+    PandocObjectFilters::Element::Str.new("hello")
   end
 
   def world_str
-    PandocElement::Str.new("world")
+    PandocObjectFilters::Element::Str.new("world")
   end
 
   def space
-    PandocElement::Space.new
+    PandocObjectFilters::Element::Space.new
   end
 
   def soft_break
-    PandocElement::SoftBreak.new
+    PandocObjectFilters::Element::SoftBreak.new
   end
 
   def line_break
-    PandocElement::LineBreak.new
+    PandocObjectFilters::Element::LineBreak.new
   end
 
   def null
-    PandocElement::Null.new
+    PandocObjectFilters::Element::Null.new
   end
 
   def para(*children)
-    PandocElement::Para.new(children)
+    PandocObjectFilters::Element::Para.new(children)
   end
 
   def plain(*children)
-    PandocElement::Plain.new(children)
+    PandocObjectFilters::Element::Plain.new(children)
   end
 end

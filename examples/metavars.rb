@@ -4,9 +4,9 @@
 # into a document.  %{fields} will be replaced by the field's
 # value, assuming it is of the type MetaInlines or MetaString.
 
-require 'pandoc-filter'
+require 'pandoc_object_filters'
 
-PandocFilter.filter do |type,value,format,meta|
+PandocObjectFilters::Filter.filter do |type,value,format,meta|
   if type == 'Str'
     match = /%\{(.*)\}$/.match(value)
 
@@ -15,9 +15,9 @@ PandocFilter.filter do |type,value,format,meta|
       result = meta[field]
 
       if result['t'] == 'MetaInlines'
-        next PandocElement.Span(['', ['interpolated'], [['field', field]]], result['c'])
+        next PandocObjectFilters::Element.Span(['', ['interpolated'], [['field', field]]], result['c'])
       elsif result['t'] == 'MetaString'
-        next PandocElement.Str(result['c'])
+        next PandocObjectFilters::Element.Str(result['c'])
       end
     end
   end

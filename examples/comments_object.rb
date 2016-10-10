@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 
-require 'pandoc-filter'
+require 'pandoc_object_filters'
 
 incomment = false
 
-PandocElement.filter! do |element|
-  if element.kind_of?(PandocElement::RawBlock)
+PandocObjectFilters::Element.filter! do |element|
+  if element.kind_of?(PandocObjectFilters::Element::RawBlock)
     if element.format == 'html'
       if /<!-- BEGIN COMMENT -->/.match(element.value)
         incomment = true

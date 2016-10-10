@@ -17,15 +17,15 @@ class ChangeAttributesTest < Minitest::Test
     para = para(hello_str, space, world_str)
     para.elements.pop
     assert_equal(para_ast(hello_str_ast, space_ast), para.to_ast)
-    para.elements = [PandocElement::Str.new('goodnight')]
+    para.elements = [PandocObjectFilters::Element::Str.new('goodnight')]
     assert_equal(para_ast(ast('Str', 'goodnight')), para.to_ast)
   end
 
   def test_link
-    link = PandocElement::Link.new([
-      PandocElement::Attr.new(['id', ['class1', 'class2'], [['key1', 'value1'], ['key2', 'value2']]]),
-      [PandocElement::Str.new('link')],
-      PandocElement::Target.new(['http://example.com', 'This is the title'])
+    link = PandocObjectFilters::Element::Link.new([
+      PandocObjectFilters::Element::Attr.new(['id', ['class1', 'class2'], [['key1', 'value1'], ['key2', 'value2']]]),
+      [PandocObjectFilters::Element::Str.new('link')],
+      PandocObjectFilters::Element::Target.new(['http://example.com', 'This is the title'])
     ])
 
     link.attributes.identifier = 'new-id'
@@ -34,7 +34,7 @@ class ChangeAttributesTest < Minitest::Test
     link.attributes.classes = ['class1']
     assert_equal(ast('Link', [['new-id', ['class1'], [['key1', 'value1'], ['key2', 'value2']]], [ast('Str', 'link')], ['http://example.com', 'This is the title']]), link.to_ast)
 
-    link.attributes = PandocElement::Attr.new(['new-id', ['class1'], [['key3', 'value3']]])
+    link.attributes = PandocObjectFilters::Element::Attr.new(['new-id', ['class1'], [['key3', 'value3']]])
     assert_equal(ast('Link', [['new-id', ['class1'], [['key3', 'value3']]], [ast('Str', 'link')], ['http://example.com', 'This is the title']]), link.to_ast)
 
     link.target.url = 'http://alternate-example.com'
@@ -43,12 +43,12 @@ class ChangeAttributesTest < Minitest::Test
     link.target.title = 'New title'
     assert_equal(ast('Link', [['new-id', ['class1'], [['key3', 'value3']]], [ast('Str', 'link')], ['http://alternate-example.com', 'New title']]), link.to_ast)
 
-    link.elements = [PandocElement::Str.new('new-link')]
+    link.elements = [PandocObjectFilters::Element::Str.new('new-link')]
     assert_equal(ast('Link', [['new-id', ['class1'], [['key3', 'value3']]], [ast('Str', 'new-link')], ['http://alternate-example.com', 'New title']]), link.to_ast)
   end
 
   def test_attr_attributes_via_attribute_setters
-    attr = PandocElement::Attr.new(['id', ['class'], [['key1', 'value1'], ['key2', 'value2']]])
+    attr = PandocObjectFilters::Element::Attr.new(['id', ['class'], [['key1', 'value1'], ['key2', 'value2']]])
     assert attr.include?('key1')
     refute attr.include?('key3')
     attr.key_values = [['key3', 'value3']]
@@ -58,7 +58,7 @@ class ChangeAttributesTest < Minitest::Test
   end
 
   def test_attr_attributes_via_index_setter_with_missing_key
-    attr = PandocElement::Attr.new(['id', ['class'], [['key', 'value']]])
+    attr = PandocObjectFilters::Element::Attr.new(['id', ['class'], [['key', 'value']]])
     assert attr.include?('key')
     refute attr.include?('key2')
     attr['key2'] = 'value2'
@@ -68,7 +68,7 @@ class ChangeAttributesTest < Minitest::Test
   end
 
   def test_attr_attributes_via_index_setter_with_single_key
-    attr = PandocElement::Attr.new(['id', ['class'], [['key', 'value']]])
+    attr = PandocObjectFilters::Element::Attr.new(['id', ['class'], [['key', 'value']]])
     assert attr.include?('key')
     attr['key'] = 'value2'
     assert_equal(['id', ['class'], [['key', 'value2']]], attr.to_ast)
@@ -76,7 +76,7 @@ class ChangeAttributesTest < Minitest::Test
   end
 
   def test_attr_attributes_via_index_setter_with_duplicate_key
-    attr = PandocElement::Attr.new(['id', ['class'], [['key', 'value1'], ['key', 'value2']]])
+    attr = PandocObjectFilters::Element::Attr.new(['id', ['class'], [['key', 'value1'], ['key', 'value2']]])
     assert attr.include?('key')
     attr['key'] = 'value3'
     assert_equal(['id', ['class'], [['key', 'value3'], ['key', 'value2']]], attr.to_ast)
@@ -84,19 +84,19 @@ class ChangeAttributesTest < Minitest::Test
   end
 
   def test_build_attr
-    attr = PandocElement::Attr.build(identifier: 'id', classes: ['class'], key_values: [['key1', 'value1'], ['key2', 'value2']])
+    attr = PandocObjectFilters::Element::Attr.build(identifier: 'id', classes: ['class'], key_values: [['key1', 'value1'], ['key2', 'value2']])
     assert_equal(['id', ['class'], [['key1', 'value1'], ['key2', 'value2']]], attr.to_ast)
   end
 
   def test_build_attr_with_key_values_hash
-    attr = PandocElement::Attr.build(identifier: 'id', classes: ['class'], key_values: { 'key1' => 'value1', 'key2' => 'value2' })
+    attr = PandocObjectFilters::Element::Attr.build(identifier: 'id', classes: ['class'], key_values: { 'key1' => 'value1', 'key2' => 'value2' })
     assert_equal(['id', ['class'], [['key1', 'value1'], ['key2', 'value2']]], attr.to_ast)
   end
 
   def test_build_without_all_attributes
-    assert_equal(['', [], []], PandocElement::Attr.build().to_ast)
-    assert_equal(['id', [], []], PandocElement::Attr.build(identifier: 'id').to_ast)
-    assert_equal(['', ['class'], []], PandocElement::Attr.build(classes: ['class']).to_ast)
-    assert_equal(['', [], [['key', 'value']]], PandocElement::Attr.build(key_values: { 'key' => 'value' }).to_ast)
+    assert_equal(['', [], []], PandocObjectFilters::Element::Attr.build().to_ast)
+    assert_equal(['id', [], []], PandocObjectFilters::Element::Attr.build(identifier: 'id').to_ast)
+    assert_equal(['', ['class'], []], PandocObjectFilters::Element::Attr.build(classes: ['class']).to_ast)
+    assert_equal(['', [], [['key', 'value']]], PandocObjectFilters::Element::Attr.build(key_values: { 'key' => 'value' }).to_ast)
   end
 end

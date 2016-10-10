@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 
-require 'pandoc-filter'
+require 'pandoc_object_filters'
 
 def self.tobullet(term, defs)
-  elements = [ PandocElement.Para([PandocElement.Strong(term)]) ]
+  elements = [ PandocObjectFilters::Element.Para([PandocObjectFilters::Element.Strong(term)]) ]
   defs.each do |el|
     el.each do |el_el|
       elements.push(el_el)
@@ -14,12 +14,11 @@ end
 
 def self.bullet_list(items)
   items = items.map{|item| tobullet(item[0],item[1])}
-  PandocElement.BulletList(items)
+  PandocObjectFilters::Element.BulletList(items)
 end
 
-PandocFilter.filter do |type,value,format,meta|
+PandocObjectFilters::Filter.filter do |type,value,format,meta|
   if type == 'DefinitionList'
     bullet_list(value)
   end
 end
-

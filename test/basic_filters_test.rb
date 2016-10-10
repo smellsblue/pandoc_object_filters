@@ -15,7 +15,7 @@ class BasicFiltersTest < Minitest::Test
     EOF
 
     output = StringIO.new
-    PandocFilter.filter(ast_to_stream(ast), output) { }
+    PandocObjectFilters::Filter.filter(ast_to_stream(ast), output) { }
     assert_equal(ast, stream_to_ast(output))
   end
 
@@ -32,9 +32,9 @@ class BasicFiltersTest < Minitest::Test
 
     output = StringIO.new
 
-    PandocFilter.filter(ast_to_stream(ast), output) do |type, value, _format, _meta|
+    PandocObjectFilters::Filter.filter(ast_to_stream(ast), output) do |type, value, _format, _meta|
       next unless type == 'Header'
-      PandocElement.Header(value[0], value[1], value[2].map { |node| upcase_if_str_node(node) })
+      PandocObjectFilters::Element.Header(value[0], value[1], value[2].map { |node| upcase_if_str_node(node) })
     end
 
     expected_ast = to_pandoc_ast <<-EOF
@@ -59,9 +59,9 @@ class BasicFiltersTest < Minitest::Test
 
     output = StringIO.new
 
-    PandocFilter.filter(ast_to_stream(ast), output, %w(markdown)) do |type, value, format, _meta|
+    PandocObjectFilters::Filter.filter(ast_to_stream(ast), output, %w(markdown)) do |type, value, format, _meta|
       next unless type == 'Header'
-      PandocElement.Header(value[0], value[1], [{ 't' => 'Str', 'c' => format }])
+      PandocObjectFilters::Element.Header(value[0], value[1], [{ 't' => 'Str', 'c' => format }])
     end
 
     expected_ast = to_pandoc_ast <<-EOF
@@ -85,9 +85,9 @@ class BasicFiltersTest < Minitest::Test
 
     output = StringIO.new
 
-    PandocFilter.filter(ast_to_stream(ast), output) do |type, value, _format, meta|
+    PandocObjectFilters::Filter.filter(ast_to_stream(ast), output) do |type, value, _format, meta|
       next unless type == 'Header'
-      PandocElement.Header(value[0], value[1], meta['header']['c'])
+      PandocObjectFilters::Element.Header(value[0], value[1], meta['header']['c'])
     end
 
     expected_ast = to_pandoc_ast <<-EOF
@@ -106,7 +106,7 @@ class BasicFiltersTest < Minitest::Test
 
   def upcase_if_str_node(node)
     if node['t'] == 'Str'
-      PandocElement.Str(node['c'].upcase)
+      PandocObjectFilters::Element.Str(node['c'].upcase)
     else
       node
     end

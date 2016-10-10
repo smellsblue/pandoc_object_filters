@@ -4,22 +4,22 @@
 # into a document.  %{fields} will be replaced by the field's
 # value, assuming it is of the type MetaInlines or MetaString.
 
-require 'pandoc-filter'
+require 'pandoc_object_filters'
 
-filter = PandocElement::Filter.new
+filter = PandocObjectFilters::Element::Filter.new
 
 filter.filter! do |element|
-  if element.kind_of?(PandocElement::Str)
+  if element.kind_of?(PandocObjectFilters::Element::Str)
     match = /%\{(.*)\}$/.match(element.value)
 
     if match
       field = match[1]
       result = filter.meta[field]
 
-      if result.kind_of?(PandocElement::MetaInlines)
-        next PandocElement::Span.new([PandocElement::Attr.build(classes: ['interpolated'], key_values: { 'field' => field }), result.elements])
-      elsif result.kind_of?(PandocElement::MetaString)
-        next PandocElement.Str(result.value)
+      if result.kind_of?(PandocObjectFilters::Element::MetaInlines)
+        next PandocObjectFilters::Element::Span.new([PandocObjectFilters::Element::Attr.build(classes: ['interpolated'], key_values: { 'field' => field }), result.elements])
+      elsif result.kind_of?(PandocObjectFilters::Element::MetaString)
+        next PandocObjectFilters::Element.Str(result.value)
       end
     end
   end

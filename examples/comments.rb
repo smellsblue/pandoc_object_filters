@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'pandoc-filter'
+require 'pandoc_object_filters'
 
 class CommentFilter
   @incomment = false
@@ -28,6 +28,6 @@ end
 
 filter = CommentFilter.new
 
-PandocFilter.filter do |type,value,format,meta|
+PandocObjectFilters::Filter.filter do |type,value,format,meta|
   filter.comment(type,value,format,meta)
 end

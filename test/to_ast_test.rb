@@ -14,23 +14,23 @@ class ToAstTest < Minitest::Test
   end
 
   def test_with_object
-    assert_equal(space_ast, PandocElement.to_ast(space))
+    assert_equal(space_ast, PandocObjectFilters::Element.to_ast(space))
   end
 
   def test_with_array
     expected = [hello_str_ast, space_ast, world_str_ast]
-    actual = PandocElement.to_ast([hello_str, space, world_str])
+    actual = PandocObjectFilters::Element.to_ast([hello_str, space, world_str])
     assert_equal(expected, actual)
   end
 
   def test_with_hash
     expected = { 'x' => 'value', 'y' => space_ast }
-    actual = PandocElement.to_ast('x' => 'value', 'y' => space)
+    actual = PandocObjectFilters::Element.to_ast('x' => 'value', 'y' => space)
     assert_equal(expected, actual)
   end
 
   def test_with_string
-    assert_equal('hello', PandocElement.to_ast('hello'))
+    assert_equal('hello', PandocObjectFilters::Element.to_ast('hello'))
   end
 
   def test_para
@@ -46,10 +46,10 @@ class ToAstTest < Minitest::Test
       ['http://example.com', 'This is the title']
     ])
 
-    actual = PandocElement::Link.new([
-      PandocElement::Attr.new(['id', ['class1', 'class2'], [['key1', 'value1'], ['key2', 'value2']]]),
-      [PandocElement::Str.new('link')],
-      PandocElement::Target.new(['http://example.com', 'This is the title'])
+    actual = PandocObjectFilters::Element::Link.new([
+      PandocObjectFilters::Element::Attr.new(['id', ['class1', 'class2'], [['key1', 'value1'], ['key2', 'value2']]]),
+      [PandocObjectFilters::Element::Str.new('link')],
+      PandocObjectFilters::Element::Target.new(['http://example.com', 'This is the title'])
     ]).to_ast
 
     assert_equal(expected, actual)

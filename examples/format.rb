@@ -4,10 +4,10 @@
 # to. %{format} will be replaced by the format that pandoc passes in to this
 # filter. It will only be replaced from matching Str elements.
 
-require 'pandoc-filter'
+require 'pandoc_object_filters'
 
-PandocFilter.filter do |type,value,format,meta|
+PandocObjectFilters::Filter.filter do |type,value,format,meta|
   if type == 'Str' && value == '%{format}'
-    PandocElement.Str(format)
+    PandocObjectFilters::Element.Str(format)
   end
 end
