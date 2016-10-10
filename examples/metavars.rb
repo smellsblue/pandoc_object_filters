@@ -6,18 +6,20 @@
 
 require 'pandoc_object_filters'
 
-PandocObjectFilters::Filter.filter do |type,value,format,meta|
-  if type == 'Str'
-    match = /%\{(.*)\}$/.match(value)
+filter = PandocObjectFilters::Element::Filter.new
+
+filter.filter! do |element|
+  if element.kind_of?(PandocObjectFilters::Element::Str)
+    match = /%\{(.*)\}$/.match(element.value)
 
     if match
       field = match[1]
-      result = meta[field]
+      result = filter.meta[field]
 
-      if result['t'] == 'MetaInlines'
-        next PandocObjectFilters::Element.Span(['', ['interpolated'], [['field', field]]], result['c'])
-      elsif result['t'] == 'MetaString'
-        next PandocObjectFilters::Element.Str(result['c'])
+      if result.kind_of?(PandocObjectFilters::Element::MetaInlines)
+        next PandocObjectFilters::Element::Span.new([PandocObjectFilters::Element::Attr.build(classes: ['interpolated'], key_values: { 'field' => field }), result.elements])
+      elsif result.kind_of?(PandocObjectFilters::Element::MetaString)
+        next PandocObjectFilters::Element.Str(result.value)
       end
     end
   end

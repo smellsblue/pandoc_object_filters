@@ -2,32 +2,20 @@
 
 require 'pandoc_object_filters'
 
-class CommentFilter
-  @incomment = false
+incomment = false
 
-  def comment(type, value, format, meta)
-    if type == 'RawBlock'
-      fmt = value[0]
-      s = value[1]
-      if fmt == 'html'
-        if /<!-- BEGIN COMMENT -->/.match(s)
-          @incomment = true
-          return []
-        elsif /<!-- END COMMENT -->/.match(s)
-          @incomment = false
-          return []
-        end
+PandocObjectFilters::Element.filter! do |element|
+  if element.kind_of?(PandocObjectFilters::Element::RawBlock)
+    if element.format == 'html'
+      if /<!-- BEGIN COMMENT -->/.match(element.value)
+        incomment = true
+        next []
+      elsif /<!-- END COMMENT -->/.match(element.value)
+        incomment = false
+        next []
       end
     end
-    if @incomment
-      # Supress anything in a comment
-      return []
-    end
   end
-end
 
-filter = CommentFilter.new
-
-PandocObjectFilters::Filter.filter do |type,value,format,meta|
-  filter.comment(type,value,format,meta)
+  next [] if incomment
 end

@@ -6,8 +6,10 @@
 
 require 'pandoc_object_filters'
 
-PandocObjectFilters::Filter.filter do |type,value,format,meta|
-  if type == 'Str' && value == '%{format}'
-    PandocObjectFilters::Element.Str(format)
+filter = PandocObjectFilters::Element::Filter.new
+
+filter.filter do |element|
+  if element.kind_of?(PandocObjectFilters::Element::Str) && element.value == '%{format}'
+    element.value = filter.format
   end
 end

@@ -14,7 +14,6 @@ class ExamplesTest < Minitest::Test
     EOF
 
     assert_equal(expected_result, pandoc(doc, filter: File.expand_path("../../examples/caps.rb", __FILE__)))
-    assert_equal(expected_result, pandoc(doc, filter: File.expand_path("../../examples/caps_object.rb", __FILE__)))
   end
 
   def test_comments
@@ -37,7 +36,6 @@ class ExamplesTest < Minitest::Test
     EOF
 
     assert_equal(expected_result, pandoc(doc, filter: File.expand_path("../../examples/comments.rb", __FILE__)))
-    assert_equal(expected_result, pandoc(doc, filter: File.expand_path("../../examples/comments_object.rb", __FILE__)))
   end
 
   def test_deflists
@@ -87,7 +85,6 @@ class ExamplesTest < Minitest::Test
     EOF
 
     assert_equal(expected_result, pandoc(doc, filter: File.expand_path("../../examples/deflists.rb", __FILE__)))
-    assert_equal(expected_result, pandoc(doc, filter: File.expand_path("../../examples/deflists_object.rb", __FILE__)))
   end
 
   def test_metavars
@@ -114,7 +111,6 @@ class ExamplesTest < Minitest::Test
     EOF
 
     assert_equal(expected_result, pandoc(doc, filter: File.expand_path("../../examples/metavars.rb", __FILE__)))
-    assert_equal(expected_result, pandoc(doc, filter: File.expand_path("../../examples/metavars_object.rb", __FILE__)))
   end
 
   def test_metavars_with_meta_string
@@ -140,7 +136,6 @@ class ExamplesTest < Minitest::Test
     EOF
 
     assert_equal(expected_result, pandoc(doc, filter: File.expand_path("../../examples/metavars.rb", __FILE__)))
-    assert_equal(expected_result, pandoc(doc, filter: File.expand_path("../../examples/metavars_object.rb", __FILE__)))
   end
 
   def test_format_to_markdown
@@ -153,7 +148,6 @@ class ExamplesTest < Minitest::Test
     EOF
 
     assert_equal(expected_result, pandoc(doc, filter: File.expand_path("../../examples/format.rb", __FILE__)))
-    assert_equal(expected_result, pandoc(doc, filter: File.expand_path("../../examples/format_object.rb", __FILE__)))
   end
 
   def test_format_to_markdown_github
@@ -166,6 +160,5 @@ class ExamplesTest < Minitest::Test
     EOF
 
     assert_equal(expected_result, pandoc(doc, to: "markdown_github", filter: File.expand_path("../../examples/format.rb", __FILE__)))
-    assert_equal(expected_result, pandoc(doc, to: "markdown_github", filter: File.expand_path("../../examples/format_object.rb", __FILE__)))
   end
 end

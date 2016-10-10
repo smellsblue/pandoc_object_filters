@@ -9,61 +9,6 @@ require "pandoc_object_filters/version"
 require "json"
 
 module PandocObjectFilters
-  class Filter
-    attr_accessor :format, :meta
-
-    def initialize(input = $stdin, output = $stdout, argv = ARGV, &block)
-      @input = input
-      @output = output
-      @argv = argv
-      @block = block
-      @format = nil
-      @meta = nil
-    end
-
-    def self.filter(input = $stdin, output = $stdout, argv = ARGV, &block)
-      new(input, output, argv, &block).filter
-    end
-
-    def filter
-      doc = JSON.parse(@input.read)
-      @format = @argv.first
-      @meta = doc[0]['unMeta']
-      @output.puts JSON.dump(walk(doc))
-    end
-
-    def walk(x)
-      if x.kind_of?(Array)
-        result = []
-        x.each do |item|
-          if item.kind_of?(Hash) && item.has_key?('t')
-            res = @block.call(item['t'], item['c'], @format, @meta)
-            if !res
-              result.push(walk(item))
-            elsif res.kind_of?(Array)
-              res.each do |z|
-                result.push(walk(z))
-              end
-            else
-              result.push(walk(res))
-            end
-          else
-            result.push(walk(item))
-          end
-        end
-        return result
-      elsif x.kind_of?(Hash)
-        result = {}
-        x.each do |key,value|
-          result[key] = walk(value)
-        end
-        return result
-      else
-        return x
-      end
-    end
-  end
-
   module Element
     def self.to_ast(object)
       if object.respond_to?(:to_ast)
