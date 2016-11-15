@@ -3,7 +3,7 @@ require "pandoc_object_filters"
 module PandocObjectFilters
   module V1_16
     module Element
-      class Document < PandocObjectFilters::Element::Base
+      class Document < PandocObjectFilters::V1_16::Element::Base
         attr_reader :meta
 
         def initialize(ast)

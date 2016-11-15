@@ -3,7 +3,7 @@ require "pandoc_object_filters"
 module PandocObjectFilters
   module V1_16
     module Element
-      class Attr < PandocObjectFilters::Element::Base
+      class Attr < PandocObjectFilters::V1_16::Element::Base
         contents_attr :identifier, 0
         contents_attr :classes, 1
         contents_attr :key_values, 2

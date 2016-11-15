@@ -3,16 +3,16 @@ require "pandoc_object_filters"
 module PandocObjectFilters
   module V1_16
     module Element
-      autoload :Attr,        "pandoc_object_filters/element/attr"
-      autoload :Base,        "pandoc_object_filters/element/base"
-      autoload :BaseElement, "pandoc_object_filters/element/base_element"
-      autoload :Block,       "pandoc_object_filters/element/block"
-      autoload :Document,    "pandoc_object_filters/element/document"
-      autoload :Enum,        "pandoc_object_filters/element/enum"
-      autoload :Inline,      "pandoc_object_filters/element/inline"
-      autoload :Meta,        "pandoc_object_filters/element/meta"
-      autoload :MetaValue,   "pandoc_object_filters/element/meta_value"
-      autoload :Target,      "pandoc_object_filters/element/target"
+      autoload :Attr,        "pandoc_object_filters/v1_16/element/attr"
+      autoload :Base,        "pandoc_object_filters/v1_16/element/base"
+      autoload :BaseElement, "pandoc_object_filters/v1_16/element/base_element"
+      autoload :Block,       "pandoc_object_filters/v1_16/element/block"
+      autoload :Document,    "pandoc_object_filters/v1_16/element/document"
+      autoload :Enum,        "pandoc_object_filters/v1_16/element/enum"
+      autoload :Inline,      "pandoc_object_filters/v1_16/element/inline"
+      autoload :Meta,        "pandoc_object_filters/v1_16/element/meta"
+      autoload :MetaValue,   "pandoc_object_filters/v1_16/element/meta_value"
+      autoload :Target,      "pandoc_object_filters/v1_16/element/target"
 
       def self.to_ast(object)
         if object.respond_to?(:to_ast)
@@ -56,44 +56,44 @@ module PandocObjectFilters
       end
 
       # rubocop:disable Metrics/LineLength
-      [["MetaMap",        :elements, { include: [PandocObjectFilters::Element::MetaValue, PandocObjectFilters::Element::Enum] }],
-       ["MetaList",       :elements,                                        { include: [PandocObjectFilters::Element::MetaValue, PandocObjectFilters::Element::Enum] }],
-       ["MetaBool",       :value,                                           { include: [PandocObjectFilters::Element::MetaValue] }],
-       ["MetaString",     :value,                                           { include: [PandocObjectFilters::Element::MetaValue] }],
-       ["MetaInlines",    :elements,                                        { include: [PandocObjectFilters::Element::MetaValue, PandocObjectFilters::Element::Enum] }],
-       ["MetaBlocks",     :elements,                                        { include: [PandocObjectFilters::Element::MetaValue, PandocObjectFilters::Element::Enum] }],
-       ["Plain",          :elements,                                        { include: [PandocObjectFilters::Element::Block, PandocObjectFilters::Element::Enum] }],
-       ["Para",           :elements,                                        { include: [PandocObjectFilters::Element::Block, PandocObjectFilters::Element::Enum] }],
-       ["CodeBlock",      :attributes, :value,                              { include: [PandocObjectFilters::Element::Block], conversions: { attributes: PandocObjectFilters::Element::Attr } }],
-       ["RawBlock",       :format, :value,                                  { include: [PandocObjectFilters::Element::Block] }],
-       ["BlockQuote",     :elements,                                        { include: [PandocObjectFilters::Element::Block, PandocObjectFilters::Element::Enum] }],
-       ["OrderedList",    :attributes, :elements,                           { include: [PandocObjectFilters::Element::Block, PandocObjectFilters::Element::Enum] }],
-       ["BulletList",     :elements,                                        { include: [PandocObjectFilters::Element::Block, PandocObjectFilters::Element::Enum] }],
-       ["DefinitionList", :elements,                                        { include: [PandocObjectFilters::Element::Block, PandocObjectFilters::Element::Enum] }],
-       ["Header",         :level, :attributes, :elements,                   { include: [PandocObjectFilters::Element::Block, PandocObjectFilters::Element::Enum], conversions: { attributes: PandocObjectFilters::Element::Attr } }],
-       ["HorizontalRule",                                                   { include: [PandocObjectFilters::Element::Block] }],
-       ["Table",          :captions, :alignments, :widths, :headers, :rows, { include: [PandocObjectFilters::Element::Block] }],
-       ["Div",            :attributes, :elements,                           { include: [PandocObjectFilters::Element::Block, PandocObjectFilters::Element::Enum], conversions: { attributes: PandocObjectFilters::Element::Attr } }],
-       ["Null",                                                             { include: [PandocObjectFilters::Element::Block] }],
-       ["Str",            :value,                                           { include: [PandocObjectFilters::Element::Inline] }],
-       ["Emph",           :elements,                                        { include: [PandocObjectFilters::Element::Inline, PandocObjectFilters::Element::Enum] }],
-       ["Strong",         :elements,                                        { include: [PandocObjectFilters::Element::Inline, PandocObjectFilters::Element::Enum] }],
-       ["Strikeout",      :elements,                                        { include: [PandocObjectFilters::Element::Inline, PandocObjectFilters::Element::Enum] }],
-       ["Superscript",    :elements,                                        { include: [PandocObjectFilters::Element::Inline, PandocObjectFilters::Element::Enum] }],
-       ["Subscript",      :elements,                                        { include: [PandocObjectFilters::Element::Inline, PandocObjectFilters::Element::Enum] }],
-       ["SmallCaps",      :elements,                                        { include: [PandocObjectFilters::Element::Inline, PandocObjectFilters::Element::Enum] }],
-       ["Quoted",         :type, :elements,                                 { include: [PandocObjectFilters::Element::Inline, PandocObjectFilters::Element::Enum] }],
-       ["Cite",           :citations, :elements,                            { include: [PandocObjectFilters::Element::Inline, PandocObjectFilters::Element::Enum] }],
-       ["Code",           :attributes, :value,                              { include: [PandocObjectFilters::Element::Inline], conversions: { attributes: PandocObjectFilters::Element::Attr } }],
-       ["Space",                                                            { include: [PandocObjectFilters::Element::Inline] }],
-       ["SoftBreak",                                                        { include: [PandocObjectFilters::Element::Inline] }],
-       ["LineBreak",                                                        { include: [PandocObjectFilters::Element::Inline] }],
-       ["Math",           :type, :value,                                    { include: [PandocObjectFilters::Element::Inline] }],
-       ["RawInline",      :format, :value,                                  { include: [PandocObjectFilters::Element::Inline] }],
-       ["Link",           :attributes, :elements, :target,                  { include: [PandocObjectFilters::Element::Inline, PandocObjectFilters::Element::Enum], conversions: { attributes: PandocObjectFilters::Element::Attr, target: PandocObjectFilters::Element::Target } }],
-       ["Image",          :attributes, :elements, :target,                  { include: [PandocObjectFilters::Element::Inline, PandocObjectFilters::Element::Enum], conversions: { attributes: PandocObjectFilters::Element::Attr, target: PandocObjectFilters::Element::Target } }],
-       ["Note",           :elements,                                        { include: [PandocObjectFilters::Element::Inline, PandocObjectFilters::Element::Enum] }],
-       ["Span",           :attributes, :elements,                           { include: [PandocObjectFilters::Element::Inline, PandocObjectFilters::Element::Enum], conversions: { attributes: PandocObjectFilters::Element::Attr } }]].each do |name, *params|
+      [["MetaMap",        :elements,                                        { include: [PandocObjectFilters::V1_16::Element::MetaValue, PandocObjectFilters::V1_16::Element::Enum] }],
+       ["MetaList",       :elements,                                        { include: [PandocObjectFilters::V1_16::Element::MetaValue, PandocObjectFilters::V1_16::Element::Enum] }],
+       ["MetaBool",       :value,                                           { include: [PandocObjectFilters::V1_16::Element::MetaValue] }],
+       ["MetaString",     :value,                                           { include: [PandocObjectFilters::V1_16::Element::MetaValue] }],
+       ["MetaInlines",    :elements,                                        { include: [PandocObjectFilters::V1_16::Element::MetaValue, PandocObjectFilters::V1_16::Element::Enum] }],
+       ["MetaBlocks",     :elements,                                        { include: [PandocObjectFilters::V1_16::Element::MetaValue, PandocObjectFilters::V1_16::Element::Enum] }],
+       ["Plain",          :elements,                                        { include: [PandocObjectFilters::V1_16::Element::Block, PandocObjectFilters::V1_16::Element::Enum] }],
+       ["Para",           :elements,                                        { include: [PandocObjectFilters::V1_16::Element::Block, PandocObjectFilters::V1_16::Element::Enum] }],
+       ["CodeBlock",      :attributes, :value,                              { include: [PandocObjectFilters::V1_16::Element::Block], conversions: { attributes: PandocObjectFilters::V1_16::Element::Attr } }],
+       ["RawBlock",       :format, :value,                                  { include: [PandocObjectFilters::V1_16::Element::Block] }],
+       ["BlockQuote",     :elements,                                        { include: [PandocObjectFilters::V1_16::Element::Block, PandocObjectFilters::V1_16::Element::Enum] }],
+       ["OrderedList",    :attributes, :elements,                           { include: [PandocObjectFilters::V1_16::Element::Block, PandocObjectFilters::V1_16::Element::Enum] }],
+       ["BulletList",     :elements,                                        { include: [PandocObjectFilters::V1_16::Element::Block, PandocObjectFilters::V1_16::Element::Enum] }],
+       ["DefinitionList", :elements,                                        { include: [PandocObjectFilters::V1_16::Element::Block, PandocObjectFilters::V1_16::Element::Enum] }],
+       ["Header",         :level, :attributes, :elements,                   { include: [PandocObjectFilters::V1_16::Element::Block, PandocObjectFilters::V1_16::Element::Enum], conversions: { attributes: PandocObjectFilters::V1_16::Element::Attr } }],
+       ["HorizontalRule",                                                   { include: [PandocObjectFilters::V1_16::Element::Block] }],
+       ["Table",          :captions, :alignments, :widths, :headers, :rows, { include: [PandocObjectFilters::V1_16::Element::Block] }],
+       ["Div",            :attributes, :elements,                           { include: [PandocObjectFilters::V1_16::Element::Block, PandocObjectFilters::V1_16::Element::Enum], conversions: { attributes: PandocObjectFilters::V1_16::Element::Attr } }],
+       ["Null",                                                             { include: [PandocObjectFilters::V1_16::Element::Block] }],
+       ["Str",            :value,                                           { include: [PandocObjectFilters::V1_16::Element::Inline] }],
+       ["Emph",           :elements,                                        { include: [PandocObjectFilters::V1_16::Element::Inline, PandocObjectFilters::V1_16::Element::Enum] }],
+       ["Strong",         :elements,                                        { include: [PandocObjectFilters::V1_16::Element::Inline, PandocObjectFilters::V1_16::Element::Enum] }],
+       ["Strikeout",      :elements,                                        { include: [PandocObjectFilters::V1_16::Element::Inline, PandocObjectFilters::V1_16::Element::Enum] }],
+       ["Superscript",    :elements,                                        { include: [PandocObjectFilters::V1_16::Element::Inline, PandocObjectFilters::V1_16::Element::Enum] }],
+       ["Subscript",      :elements,                                        { include: [PandocObjectFilters::V1_16::Element::Inline, PandocObjectFilters::V1_16::Element::Enum] }],
+       ["SmallCaps",      :elements,                                        { include: [PandocObjectFilters::V1_16::Element::Inline, PandocObjectFilters::V1_16::Element::Enum] }],
+       ["Quoted",         :type, :elements,                                 { include: [PandocObjectFilters::V1_16::Element::Inline, PandocObjectFilters::V1_16::Element::Enum] }],
+       ["Cite",           :citations, :elements,                            { include: [PandocObjectFilters::V1_16::Element::Inline, PandocObjectFilters::V1_16::Element::Enum] }],
+       ["Code",           :attributes, :value,                              { include: [PandocObjectFilters::V1_16::Element::Inline], conversions: { attributes: PandocObjectFilters::V1_16::Element::Attr } }],
+       ["Space",                                                            { include: [PandocObjectFilters::V1_16::Element::Inline] }],
+       ["SoftBreak",                                                        { include: [PandocObjectFilters::V1_16::Element::Inline] }],
+       ["LineBreak",                                                        { include: [PandocObjectFilters::V1_16::Element::Inline] }],
+       ["Math",           :type, :value,                                    { include: [PandocObjectFilters::V1_16::Element::Inline] }],
+       ["RawInline",      :format, :value,                                  { include: [PandocObjectFilters::V1_16::Element::Inline] }],
+       ["Link",           :attributes, :elements, :target,                  { include: [PandocObjectFilters::V1_16::Element::Inline, PandocObjectFilters::V1_16::Element::Enum], conversions: { attributes: PandocObjectFilters::V1_16::Element::Attr, target: PandocObjectFilters::V1_16::Element::Target } }],
+       ["Image",          :attributes, :elements, :target,                  { include: [PandocObjectFilters::V1_16::Element::Inline, PandocObjectFilters::V1_16::Element::Enum], conversions: { attributes: PandocObjectFilters::V1_16::Element::Attr, target: PandocObjectFilters::V1_16::Element::Target } }],
+       ["Note",           :elements,                                        { include: [PandocObjectFilters::V1_16::Element::Inline, PandocObjectFilters::V1_16::Element::Enum] }],
+       ["Span",           :attributes, :elements,                           { include: [PandocObjectFilters::V1_16::Element::Inline, PandocObjectFilters::V1_16::Element::Enum], conversions: { attributes: PandocObjectFilters::V1_16::Element::Attr } }]].each do |name, *params|
         # rubocop:enable Metrics/LineLength
         name.freeze
 
@@ -104,7 +104,7 @@ module PandocObjectFilters
             {}
           end
 
-        const_set(name, Class.new(PandocObjectFilters::Element::BaseElement) do
+        const_set(name, Class.new(PandocObjectFilters::V1_16::Element::BaseElement) do
           (options[:include] || []).each { |mod| include mod }
 
           if params.size == 1

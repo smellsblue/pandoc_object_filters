@@ -3,8 +3,8 @@ require "pandoc_object_filters"
 module PandocObjectFilters
   module V1_16
     module Element
-      class Meta < PandocObjectFilters::Element::Base
-        include PandocObjectFilters::Element::Enum
+      class Meta < PandocObjectFilters::V1_16::Element::Base
+        include PandocObjectFilters::V1_16::Element::Enum
         alias elements contents
 
         def initialize(contents = {})
