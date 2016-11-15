@@ -7,8 +7,16 @@ AllCops:
   DisplayCopNames: true
   TargetRubyVersion: 2.2
 
+Style/ClassAndModuleCamelCase:
+  Exclude:
+    - lib/**/v*_*
+    - lib/**/v*_*/**/*
+
 Metrics/LineLength:
   Max: 120
+
+Style/Documentation:
+  Enabled: false
 
 Style/SignalException:
   EnforcedStyle: only_raise
