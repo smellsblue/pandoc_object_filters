@@ -1,7 +1,7 @@
 require "pandoc_object_filters"
 
 module PandocObjectFilters
-  module V1_16
+  module V1_17
     module Element
       extend PandocObjectFilters::ElementHelper
       self.version = PandocObjectFilters::V1_16
