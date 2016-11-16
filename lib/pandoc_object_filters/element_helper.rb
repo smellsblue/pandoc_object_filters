@@ -36,7 +36,7 @@ module PandocObjectFilters
     def to_object(object)
       if object.is_a?(Array)
         object.map { |x| to_object(x) }
-      elsif object.is_a?(Hash) && object.include?("t") && object.include?("c")
+      elsif object.is_a?(Hash) && object.include?("t")
         raise "Unknown type: #{object['t']}" unless PandocObjectFilters::Element.const_defined?(object["t"])
         type = PandocObjectFilters::Element.const_get(object["t"])
         raise "Invalid type: #{object['t']}" unless type < PandocObjectFilters::Element::BaseElement

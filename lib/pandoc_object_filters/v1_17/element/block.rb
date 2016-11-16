@@ -3,7 +3,8 @@ require "pandoc_object_filters"
 module PandocObjectFilters
   module V1_17
     module Element
-      module Block < PandocObjectFilters::V1_16::Element::Block
+      module Block
+        include PandocObjectFilters::V1_16::Element::Block
       end
     end
   end

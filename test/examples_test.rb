@@ -3,6 +3,7 @@ require_relative "test_helper"
 
 class ExamplesTest < Minitest::Test
   include PandocHelper
+  include PandocVersionHelper
 
   def test_caps
     doc = <<-EOF
@@ -98,17 +99,35 @@ class ExamplesTest < Minitest::Test
       This was written by %{author}
     EOF
 
-    expected_result = strip_whitespace <<-EOF
-      ---
-      author: Caleb Hyde
-      ...
+    expected_result = versioned do
+      v "1.16" do
+        strip_whitespace <<-EOF
+          ---
+          author: Caleb Hyde
+          ...
 
-      <span class="interpolated" field="author">Caleb Hyde</span> {#author}
-      ===========================================================
+          <span class="interpolated" field="author">Caleb Hyde</span> {#author}
+          ===========================================================
 
-      This was written by <span class="interpolated" field="author">Caleb
-      Hyde</span>
-    EOF
+          This was written by <span class="interpolated" field="author">Caleb
+          Hyde</span>
+        EOF
+      end
+
+      v "1.17" do
+        strip_whitespace <<-EOF
+          ---
+          author: Caleb Hyde
+          ---
+
+          <span class="interpolated" field="author">Caleb Hyde</span> {#author}
+          ===========================================================
+
+          This was written by <span class="interpolated" field="author">Caleb
+          Hyde</span>
+        EOF
+      end
+    end
 
     assert_equal(expected_result, pandoc(doc, filter: File.expand_path("../../examples/metavars.rb", __FILE__)))
   end
@@ -124,16 +143,33 @@ class ExamplesTest < Minitest::Test
       This was written by %{author}
     EOF
 
-    expected_result = strip_whitespace <<-EOF
-      ---
-      author: 42
-      ...
+    expected_result = versioned do
+      v "1.16" do
+        strip_whitespace <<-EOF
+          ---
+          author: 42
+          ...
 
-      42 {#author}
-      ==
+          42 {#author}
+          ==
 
-      This was written by 42
-    EOF
+          This was written by 42
+        EOF
+      end
+
+      v "1.17" do
+        strip_whitespace <<-EOF
+          ---
+          author: 42
+          ---
+
+          42 {#author}
+          ==
+
+          This was written by 42
+        EOF
+      end
+    end
 
     assert_equal(expected_result, pandoc(doc, filter: File.expand_path("../../examples/metavars.rb", __FILE__)))
   end

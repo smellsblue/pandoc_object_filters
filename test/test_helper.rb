@@ -5,6 +5,42 @@ require "minitest/autorun"
 require "open3"
 require "stringio"
 
+class VersionCapturer
+  def initialize
+    @versions = {}
+  end
+
+  def v(number)
+    @versions[number] = yield
+  end
+
+  def value
+    current_version = PandocObjectFilters.current_pandoc_version.to_s
+    raise "Missing version: #{current_version}" unless @versions.include?(current_version)
+    @versions[current_version]
+  end
+end
+
+module PandocVersionHelper
+  def v(number, &block)
+    raise "v must be called within a versioned block!" unless @_version_capturer
+    @_version_capturer.v(number, &block)
+  end
+
+  def versioned
+    VersionCapturer.new.tap do |capturer|
+      raise "Cannot nest versioned calls!" if @_version_capturer
+      @_version_capturer = capturer
+
+      begin
+        yield
+      ensure
+        @_version_capturer = nil
+      end
+    end.value
+  end
+end
+
 module PandocHelper
   def ast_to_stream(ast)
     StringIO.new(JSON.dump(ast))
@@ -40,7 +76,19 @@ end
 
 module PandocAstHelper
   def ast(type, value = [])
-    { "t" => type, "c" => value }
+    VersionCapturer.new.tap do |capturer|
+      capturer.v "1.16" do
+        { "t" => type, "c" => value }
+      end
+
+      capturer.v "1.17" do
+        if %w(Space SoftBreak LineBreak Null HorizontalRule).include?(type)
+          { "t" => type }
+        else
+          { "t" => type, "c" => value }
+        end
+      end
+    end.value
   end
 
   def hello_str_ast
